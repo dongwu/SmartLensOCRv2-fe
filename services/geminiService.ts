@@ -21,7 +21,7 @@ const getAPIUrl = (): string => {
     return url;
   }
   // Fall back to build-time environment variable or localhost
-  const url = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   console.log('[GeminiService] Using API_URL from build env:', url);
   return url;
 };

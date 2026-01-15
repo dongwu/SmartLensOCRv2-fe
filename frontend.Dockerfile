@@ -44,13 +44,14 @@ COPY --from=builder /app/public ./public
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=8080
 
-# Expose port
-EXPOSE 3000
+# Expose port (Cloud Run requires 8080)
+EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+  CMD node -e "fetch('http://localhost:8080').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 
 # Start the Next.js server
-CMD ["npm", "start"]
+CMD ["node_modules/.bin/next", "start", "-p", "8080"]
