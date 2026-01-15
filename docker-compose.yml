@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  smartlensocr-frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      BACKEND_URL: ${BACKEND_URL:-https://smartlensocrv2-bk-sp62tbdjjq-uw.a.run.app}
+      NEXT_TELEMETRY_DISABLED: 1
+    networks:
+      - smartlens-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  smartlens-network:
+    driver: bridge
+
