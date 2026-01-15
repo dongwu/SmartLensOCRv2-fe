@@ -33,13 +33,13 @@ export async function getAuthClient(targetUrl: string) {
  */
 export async function authenticatedFetch(
   url: string,
-  options: { method?: string; data?: any } = {}
+  options: { method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'; data?: any } = {}
 ) {
   try {
     const client = await getAuthClient(url);
     return await client.request({
       url,
-      method: options.method || 'GET',
+      method: (options.method || 'GET') as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
       data: options.data,
     });
   } catch (error) {
